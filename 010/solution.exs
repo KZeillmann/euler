@@ -5,10 +5,10 @@ defmodule Helpers do
     |> Enum.map(&({&1, true}))
     |> Enum.into(%{})
     |> sieve_of_eratosthenes(max_num, 2)
-    |> Enum.filter(fn(entry) -> elem(entry, 1) end)
-    |> Enum.map(fn(entry) -> elem(entry, 0) end)
-    |> Enum.drop(-1) #remove max_num
+    |> Enum.filter(fn({_, bool}) -> bool end)
+    |> Enum.map(fn({num, _}) -> num end)
     |> Enum.sort
+    |> Enum.drop(-1)
   end
 
   def sieve_of_eratosthenes(sieve, max_num, test_num) do
