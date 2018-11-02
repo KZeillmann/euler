@@ -11,21 +11,19 @@ defmodule Helpers do
     end
   end
 
-  def collatz_sequence_length(map, num) do
+  def build_collatz_map(map, num) do
     if map[num] != nil do
       map
     else
       next_num = next_collatz_term(num)
-      new_map = collatz_sequence_length(map, next_num)
-      
+      next_sequence_length = build_collatz_map(map, next_num)[next_num]
+      Map.put(map, num, next_sequence_length + 1)
     end
   end
+
 end
 
-
-1..2
-|> Enum.reduce(%{1=>1}, fn(num, map) ->
-                          map = Helpers.collatz_sequence_length(map, num)
-                          map
-                        end)
+1..999_999
+|> Enum.reduce(%{1 => 1}, fn(num, map) -> Helpers.build_collatz_map(map, num) end)
+|> Enum.max_by(fn({_, length}) -> length end)
 |> IO.inspect
